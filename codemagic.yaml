@@ -5,6 +5,8 @@ workflows:
 
     environment:
       java: 17
+      android_signing:
+        - simon_says_horror_key
 
     scripts:
       - name: Set Android SDK location
@@ -15,7 +17,7 @@ workflows:
         script: |
           gradle wrapper --gradle-version 8.11.1
 
-      - name: Build Android App Bundle
+      - name: Build SIGNED Android App Bundle
         script: |
           chmod +x gradlew
           ./gradlew bundleRelease
