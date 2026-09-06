@@ -36,7 +36,14 @@ public class GameView extends View {
     public GameView(Context context) {
         super(context);
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        cave = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier("cave_monster", "drawable", context.getPackageName()));
+        // Disable Android density scaling for the large background image.
+        // When a large bitmap lives in res/drawable, decodeResource can otherwise
+        // upscale it several times on high-density phones and cause an OOM crash
+        // immediately when the app opens.
+        BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+        bitmapOptions.inScaled = false;
+        int caveResId = getResources().getIdentifier("cave_monster", "drawable", context.getPackageName());
+        cave = BitmapFactory.decodeResource(getResources(), caveResId, bitmapOptions);
         if (cave != null) src.set(0, 0, cave.getWidth(), cave.getHeight());
         stroke.setStyle(Paint.Style.STROKE);
         stroke.setStrokeWidth(4f);
